@@ -1,24 +1,42 @@
 package com.example.giulia.usingcamera;
 
+
+import android.content.Context;
+
+import android.content.Intent;
 import android.hardware.Camera;
+
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.os.Build;
+import android.provider.Settings;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import org.w3c.dom.Text;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements LocationListener {
 
     private Camera mCamera = null;
     private CameraView mCameraView = null;
     private ImageButton lupe;
+    private Button test;
     private TextView text;
+    private TextView gpsCoordinates;
     private int id;
-
+    private LocationManager locationManager;
+    private LocationListener locationListener;
 
 
     @Override
@@ -26,31 +44,33 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        try{
+        try {
             mCamera = Camera.open();
         } catch (Exception e) {
             Log.d("Error", "Failed to get camera: " + e.getMessage());
         }
 
-        if(mCamera != null) {
-            mCameraView = new CameraView(this,mCamera);
-            FrameLayout camera_view = (FrameLayout)findViewById(R.id.camera_view);
+        if (mCamera != null) {
+            mCameraView = new CameraView(this, mCamera);
+            FrameLayout camera_view = (FrameLayout) findViewById(R.id.camera_view);
             camera_view.addView(mCameraView);
         }
 
-        lupe =  (ImageButton)findViewById(R.id.lupe);
+        lupe = (ImageButton) findViewById(R.id.lupe);
         text = (TextView) findViewById(R.id.textForUser);
         id = 1;
 
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 3000, 0, this);
+
     }
 
-
-     public void changeToTextView(View view) {
+    public void changeToTextView(View view) {
          lupe.setVisibility(View.GONE);
 
          if(id == 1) {
              text.setText("Du wolltest dich mit deinem Freund in der Fachschaft Informatik treffen." +
-                     "Und du bist etwas zu spät dran. Begib dich am besten sofort dahin um ihn nicht warten zu lassen.");
+                     "Und du bist etwas zu spät dran. Begib dich am besten sofort dorthin um ihn nicht warten zu lassen.");
          } else if (id == 2){
              text.setText("Hier scheint er nicht zu sein. Aber es ist schließlich auch Mittagszeit. " +
                      "Vielleicht solltest du einfach mal in der Mensa vorbei schauen.");
@@ -64,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
              text.setText("Vor dem verschlossenen Gebäude ist kein Mensch. Jetzt hast du nur noch eine Idee. " +
                      "Schau doch einfach mal im Multimediaraum nach ihm");
          } else if (id == 6) {
-             text.setText("Herzlichen Glückwunsch du hast ihn gefunden. Er war schon fleißig und hat die Aufgaben des Labores angefangen");
+             text.setText("Herzlichen Glückwunsch du hast deinen Freund gefunden. Er war schon fleißig und hat die Aufgaben des Labores angefangen");
          }
          text.setVisibility(View.VISIBLE);
          id++;
@@ -78,4 +98,44 @@ public class MainActivity extends AppCompatActivity {
             System.exit(0);
         }
     }
+
+    @Override
+    public void onLocationChanged(Location location) {
+
+        double latitude = location.getLatitude();
+        double longlitude = location.getLongitude();
+        Toast.makeText(getApplicationContext(),"Latitude = " + latitude + "Longlitude = " + longlitude,Toast.LENGTH_SHORT).show();
+
+        if (id == 2 && 49.015932 <= latitude && latitude <= 49.015131  &&   8.390107 < longlitude && longlitude < 8.390387) {
+            changeToButton(null); //Fachschaft
+        } else if (id == 3 && 49.014454 <= latitude && latitude <= 49.014638  &&   8.393713 < longlitude && longlitude < 8.394252) {
+            changeToButton(null); //Mensa
+        } else if (id == 4 && 49.015510 <= latitude && latitude <= 49.015368  &&   8.391353 < longlitude && longlitude < 8.391922) {
+            changeToButton(null); //Bib
+        } else if (id == 5 && 49.016586  <= latitude && latitude <= 49.016767 &&   8.390894 < longlitude && longlitude < 8.391897) {
+            changeToButton(null); //verschlossens Gebäude
+        } else if (id == 6 && 49.015182 <= latitude && latitude <= 49.015602  &&   8.389390 < longlitude && longlitude < 8.389597) {
+            changeToButton(null); //Multimediaraum
+        }
+
+    }
+
+    @Override
+    public void onStatusChanged(String s, int i, Bundle bundle) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String s) {
+        Toast.makeText(getApplicationContext(), "GPS Enabled", Toast.LENGTH_SHORT).show();
+
+    }
+
+    @Override
+    public void onProviderDisabled(String s) {
+        Toast.makeText(getApplicationContext(), "GPS Disabled", Toast.LENGTH_SHORT).show();
+    }
+
+
+
 }
