@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             return;
         }
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 3000, 0, this);
-
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 3000, 0, this);
     }
 
     public void changeToTextView(View view) {
@@ -111,10 +111,14 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     }
 
 
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+
+    }
 
     @Override
     public void onLocationChanged(Location location) {
-        Toast.makeText(getApplicationContext(),"Latitude = ",Toast.LENGTH_SHORT).show();
+
         double latitude = location.getLatitude();
         double longlitude = location.getLongitude();
         Toast.makeText(getApplicationContext(),"Latitude = " + latitude + "Longlitude = " + longlitude,Toast.LENGTH_SHORT).show();
