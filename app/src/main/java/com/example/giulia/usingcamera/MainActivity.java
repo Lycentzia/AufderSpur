@@ -1,29 +1,30 @@
 package com.example.giulia.usingcamera;
 
 
+import android.Manifest;
 import android.content.Context;
 
-import android.content.Intent;
+
+import android.content.pm.PackageManager;
 import android.hardware.Camera;
 
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.os.Build;
-import android.provider.Settings;
+
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
-import android.widget.Button;
+
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
+
 
 
 public class MainActivity extends AppCompatActivity implements LocationListener {
@@ -31,12 +32,12 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     private Camera mCamera = null;
     private CameraView mCameraView = null;
     private ImageButton lupe;
-    private Button test;
+
     private TextView text;
-    private TextView gpsCoordinates;
+
     private int id;
     private LocationManager locationManager;
-    private LocationListener locationListener;
+
 
 
     @Override
@@ -61,6 +62,16 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         id = 1;
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 3000, 0, this);
 
     }
@@ -69,20 +80,20 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
          lupe.setVisibility(View.GONE);
 
          if(id == 1) {
-             text.setText("Du wolltest dich mit deinem Freund in der Fachschaft Informatik treffen." +
-                     "Und du bist etwas zu spät dran. Begib dich am besten sofort dorthin um ihn nicht warten zu lassen.");
+             text.setText("Du wolltest dich mit deinem Freund vor dem E Gebäude treffen um gemeinsam zu lernen." +
+                     " Du bist etwas zu spät dran. Begib dich am besten sofort dorthin um ihn nicht warten zu lassen.");
          } else if (id == 2){
              text.setText("Hier scheint er nicht zu sein. Aber es ist schließlich auch Mittagszeit. " +
-                     "Vielleicht solltest du einfach mal in der Mensa vorbei schauen.");
+                     " Vielleicht solltest du einfach mal in der Mensa vorbei schauen.");
          } else if (id == 3){
              text.setText("In der Mensa sind zwar viele Studenten, aber dein Freund ist leider nicht dabei. " +
-                     "Allerdings trefft ihr euch oft in der Bibliothek. Vielleicht kannst du ihn vor dem A Gebäude finden.");
+                     " Allerdings trefft ihr euch oft in der Bibliothek. Vielleicht kannst du ihn vor dem A Gebäude finden.");
          } else if (id == 4){
-             text.setText("Auch dort scheint er nicht zu sein. Du weist aber das er vom Gebäude, dass immer zu ist, fasziniert ist. " +
-                     "Vielleicht ist er mal wieder dort um zu schauen, ob es noch immer verschlossen ist.");
+             text.setText("Auch dort scheint er nicht zu sein. Du weist aber, dass er vom Gebäude, das immer zu ist, fasziniert ist. " +
+                     " Vielleicht ist er mal wieder dort um zu schauen, ob es noch immer verschlossen ist.");
          } else if (id == 5) {
              text.setText("Vor dem verschlossenen Gebäude ist kein Mensch. Jetzt hast du nur noch eine Idee. " +
-                     "Schau doch einfach mal im Multimediaraum nach ihm");
+                     " Schau doch einfach mal im Multimediaraum nach ihm");
          } else if (id == 6) {
              text.setText("Herzlichen Glückwunsch du hast deinen Freund gefunden. Er war schon fleißig und hat die Aufgaben des Labores angefangen");
          }
@@ -99,20 +110,22 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         }
     }
 
+
+
     @Override
     public void onLocationChanged(Location location) {
-
+        Toast.makeText(getApplicationContext(),"Latitude = ",Toast.LENGTH_SHORT).show();
         double latitude = location.getLatitude();
         double longlitude = location.getLongitude();
         Toast.makeText(getApplicationContext(),"Latitude = " + latitude + "Longlitude = " + longlitude,Toast.LENGTH_SHORT).show();
 
-        if (id == 2 && 49.015932 <= latitude && latitude <= 49.015131  &&   8.390107 < longlitude && longlitude < 8.390387) {
+        if (id == 2 && 49.014735 <= latitude && latitude <= 49.015290  &&   8.390394 < longlitude && longlitude < 8.391000) {
             changeToButton(null); //Fachschaft
         } else if (id == 3 && 49.014454 <= latitude && latitude <= 49.014638  &&   8.393713 < longlitude && longlitude < 8.394252) {
             changeToButton(null); //Mensa
-        } else if (id == 4 && 49.015510 <= latitude && latitude <= 49.015368  &&   8.391353 < longlitude && longlitude < 8.391922) {
+        } else if (id == 4 && 49.015218 <= latitude && latitude <= 49.015514  &&   8.391294 < longlitude && longlitude < 8.391922) {
             changeToButton(null); //Bib
-        } else if (id == 5 && 49.016586  <= latitude && latitude <= 49.016767 &&   8.390894 < longlitude && longlitude < 8.391897) {
+        } else if (id == 5 && 49.016359  <= latitude && latitude <= 49.016637 &&   8.390020 < longlitude && longlitude < 8.3910627) {
             changeToButton(null); //verschlossens Gebäude
         } else if (id == 6 && 49.015182 <= latitude && latitude <= 49.015602  &&   8.389390 < longlitude && longlitude < 8.389597) {
             changeToButton(null); //Multimediaraum
