@@ -19,9 +19,9 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/lupe"
+        android:icon="@mipmap/lupe_new"
         android:label="Auf der Spur"
-        android:roundIcon="@mipmap/lupe_round"
+        android:roundIcon="@mipmap/lupe_new_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity" >
