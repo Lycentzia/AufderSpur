@@ -72,8 +72,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 3000, 0, this);
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 3000, 0, this);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 0, this);
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5000, 0, this);
     }
 
     public void changeToTextView(View view) {
@@ -84,16 +84,16 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                      " Du bist etwas zu spät dran. Begib dich am besten sofort dorthin um ihn nicht warten zu lassen.");
          } else if (id == 2){
              text.setText("Hier scheint er nicht zu sein. Aber es ist schließlich auch Mittagszeit. " +
-                     " Vielleicht solltest du einfach mal in der Mensa vorbei schauen.");
+                     " Vielleicht solltest du einfach mal vor der Mensa vorbei schauen.");
          } else if (id == 3){
-             text.setText("In der Mensa sind zwar viele Studenten, aber dein Freund ist leider nicht dabei. " +
+             text.setText("Vor der Mensa sind zwar viele Studenten, aber dein Freund ist leider nicht dabei. " +
                      " Allerdings trefft ihr euch oft in der Bibliothek. Vielleicht kannst du ihn vor dem A Gebäude finden.");
          } else if (id == 4){
              text.setText("Auch dort scheint er nicht zu sein. Du weist aber, dass er vom Gebäude, das immer zu ist, fasziniert ist. " +
                      " Vielleicht ist er mal wieder dort um zu schauen, ob es noch immer verschlossen ist.");
          } else if (id == 5) {
              text.setText("Vor dem verschlossenen Gebäude ist kein Mensch. Jetzt hast du nur noch eine Idee. " +
-                     " Schau doch einfach mal im Multimediaraum nach ihm");
+                     " Schau doch einfach mal im Designlabor nach ihm");
          } else if (id == 6) {
              text.setText("Herzlichen Glückwunsch du hast deinen Freund gefunden. Er war schon fleißig und hat die Aufgaben des Labores angefangen");
          }
